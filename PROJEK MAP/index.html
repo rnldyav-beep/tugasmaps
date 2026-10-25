@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tap.in rev — Solusi Google Review Map | QR Code & NFC</title>
+  <meta name="description"
+    content="Permudah pelanggan memberikan ulasan di Google Maps menggunakan teknologi QR Code dan NFC. Tingkatkan reputasi digital bisnis Anda bersama tap.in rev." />
+
+  <!-- ═══════════════════════════════════════════════════════
+       FONTS — Plus Jakarta Sans & Outfit
+       ═══════════════════════════════════════════════════════ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap"
+    rel="stylesheet" />
+
+  <!-- ═══════════════════════════════════════════════════════
+       TAILWIND CSS v3 (CDN) & Lucide Icons
+       ═══════════════════════════════════════════════════════ -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Tailwind Config -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            jakarta: ['"Plus Jakarta Sans"', 'sans-serif'],
+            outfit: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            gold: '#FACC15',
+            dark: '#050505',
+            surface: '#111111',
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CUSTOM STYLES
+       ═══════════════════════════════════════════════════════ -->
+  <style>
+    /* ── Base ──────────────────────────────────────────── */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x:
+        hidden;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #050505;
+      color: #d4d4d8;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ── Ambient Radial Glow (Hero Top) ───────────────── */
+    .ambient-glow {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 0%, rgba(250, 204, 21, 0.16), transparent 65%);
+      z-index: 0;
+    }
+
+    /* ── Anti-Gravity Float Keyframes ─────────────────── */
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    @keyframes float-slow {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-6px);
+      }
+    }
+
+    .animate-float {
+      animation: float 5s ease-in-out infinite;
+    }
+
+    .animate-float-slow {
+      animation: float-slow 6s ease-in-out infinite;
+    }
+
+    .animate-float-delay {
+      animation: float 5s ease-in-out 1.5s infinite;
+    }
+
+    /* ── Floating Pill Navbar Glass ────────────────────── */
+    .nav-pill {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-link {
+      position: relative;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: #FACC15;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: #FACC15;
+      border-radius: 999px;
+      transform: translateX(-50%);
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 60%;
+    }
+
+    /* ── Heading Typography ────────────────────────────── */
+    .heading-main {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      line-height: 1.18;
+    }
+
+    /* ── Badge Glow Border ────────────────────────────── */
+    .badge-glow {
+      border: 1px solid rgba(250, 204, 21, 0.35);
+      background: rgba(250, 204, 21, 0.06);
+      box-shadow: 0 0 20px rgba(250, 204, 21, 0.08);
+    }
+
+    /* ── CTA Buttons ──────────────────────────────────── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 2rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: 9999px;
+      border: 1.5px solid #FACC15;
+      color: #FACC15;
+      background: rgba(250, 204, 21, 0.08);
+      transition: all 0.35s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background: #FACC15;
+      color: #050505;
+      box-shadow: 0 0 30px rgba(250, 204, 21, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 2rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: rgba(255, 255, 255, 0.7);
+      background: rgba(255, 255, 255, 0.04);
+      transition: all 0.35s ease;
+      cursor: pointer;
+    }
+
+    .btn-secondary:hover {
+      border-color: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateY(-2px);
+    }
+
+    /* ── Mobile Menu Overlay ──────────────────────────── */
+    .mobile-menu {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.35s ease;
+    }
+
+    .mobile-menu.open {
+      max-height: 400px;
+      opacity: 1;
+    }
+
+    /* ── Hamburger Animation ──────────────────────────── */
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: #FACC15;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    /* ── Subtle grain texture ─────────────────────────── */
+    .grain::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.025;
+      z-index: 9999;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* ── Decorative dots grid ─────────────────────────── */
+    .dot-grid {
+      background-image: radial-gradient(rgba(250, 204, 21, 0.08) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    /* ── Scrollbar Styling ────────────────────────────── */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #050505;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(250, 204, 21, 0.25);
+      border-radius: 999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(250, 204, 21, 0.45);
+    }
+
+    /* ── Section 3: Cara Kerja Tab System ─────────────── */
+    .tab-btn {
+      position: relative;
+      padding: 0.75rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.35);
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.35s ease;
+      text-align: left;
+      line-height: 1.4;
+    }
+
+    .tab-btn:hover {
+      color: rgba(255, 255, 255, 0.6);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .tab-btn.active {
+      color: #FACC15;
+      border-color: rgba(250, 204, 21, 0.4);
+      background: rgba(250, 204, 21, 0.06);
+      box-shadow: 0 0 20px rgba(250, 204, 21, 0.06);
+    }
+
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 20%;
+      width: 60%;
+      height: 2px;
+      background: #FACC15;
+      border-radius: 999px;
+      box-shadow: 0 0 8px rgba(250, 204, 21, 0.5);
+    }
+
+    .tab-number {
+      font-size: 0.65rem;
+      opacity: 0.5;
+      margin-right: 0.25rem;
+    }
+
+    .tab-btn.active .tab-number {
+      opacity: 1;
+      color: #FACC15;
+    }
+
+    /* ── Tab Content Panel ────────────────────────────── */
+    .tab-panel {
+      display: none;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .tab-panel.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Bento Card ───────────────────────────────────── */
+    .bento-card {
+      background: #0a0a0a;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 1.25rem;
+      overflow: hidden;
+      transition: border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .bento-card:hover {
+      border-color: rgba(250, 204, 21, 0.25);
+      box-shadow: 0 0 40px rgba(250, 204, 21, 0.05);
+    }
+
+    /* ── NFC Radar Concentric Circles ─────────────────── */
+    @keyframes radar-ping {
+      0% {
+        transform: scale(0.7);
+        opacity: 0.6;
+      }
+
+      100% {
+        transform: scale(1.8);
+        opacity: 0;
+      }
+    }
+
+    @keyframes radar-pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 0.35;
+      }
+
+      50% {
+        transform: scale(1.08);
+        opacity: 0.55;
+      }
+    }
+
+    .radar-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(250, 204, 21, 0.2);
+    }
+
+    .radar-ring-1 {
+      width: 80px;
+      height: 80px;
+      animation: radar-pulse 3s ease-in-out infinite;
+    }
+
+    .radar-ring-2 {
+      width: 130px;
+      height: 130px;
+      animation: radar-pulse 3s ease-in-out 0.5s infinite;
+    }
+
+    .radar-ring-3 {
+      width: 180px;
+      height: 180px;
+      animation: radar-pulse 3s ease-in-out 1s infinite;
+    }
+
+    .radar-ring-4 {
+      width: 230px;
+      height: 230px;
+      animation: radar-pulse 3s ease-in-out 1.5s infinite;
+      border-color: rgba(250, 204, 21, 0.08);
+    }
+
+    .radar-ping {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(250, 204, 21, 0.15);
+      animation: radar-ping 2.5s ease-out infinite;
+    }
+
+    /* ── Star Glow Inner Effect ───────────────────────── */
+    .star-glow-bg {
+      background: radial-gradient(circle at 50% 60%, rgba(250, 204, 21, 0.18), rgba(250, 204, 21, 0.04) 50%, transparent 75%);
+    }
+
+    @keyframes star-spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes glow-breathe {
+
+      0%,
+      100% {
+        opacity: 0.6;
+        filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.3));
+      }
+
+      50% {
+        opacity: 1;
+        filter: drop-shadow(0 0 20px rgba(250, 204, 21, 0.6));
+      }
+    }
+
+    .star-icon-float {
+      animation: float 5s ease-in-out infinite, glow-breathe 3s ease-in-out infinite;
+    }
+
+    /* ── Mobile-First Polish ──────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+
+      .animate-float,
+      .animate-float-slow,
+      .animate-float-delay,
+      .star-icon-float,
+      .radar-ring,
+      .radar-ping {
+        animation: none !important;
+      }
+    }
+
+    /* Reduce heavy animations on small screens for perf */
+    @media (max-width: 640px) {
+      .radar-ring-4 {
+        display: none;
+      }
+
+      .grain::before {
+        display: none;
+      }
+    }
+
+    /* Ensure touch targets meet 44px min */
+    @media (max-width: 768px) {
+      .tab-btn {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+      }
+
+      .mobile-menu a {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    /* Footer link hover */
+    .footer-link {
+      color: rgba(255, 255, 255, 0.35);
+      font-size: 0.8rem;
+      transition: color 0.25s ease;
+    }
+
+    .footer-link:hover {
+      color: #FACC15;
+    }
+  </style>
+</head>
+
+<body class="grain font-jakarta antialiased">
+
+  <!-- ═══════════════════════════════════════════════════════
+       NAVBAR — Floating Pill (Responsive)
+       ═══════════════════════════════════════════════════════ -->
+  <header id="navbar" class="fixed top-0 left-0 w-full z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+      <div class="flex items-center justify-between">
+
+        <!-- ── Logo ──────────────────────────────────── -->
+        <a href="#" id="logo" class="flex-shrink-0 group">
+          <div class="flex items-baseline leading-none">
+            <span class="text-2xl font-extrabold text-gold tracking-normal font-jakarta">tap.</span>
+            <span class="text-2xl font-extrabold text-white tracking-normal font-jakarta">in rev</span>
+          </div>
+          <p
+            class="text-[10px] tracking-[0.25em] text-gold italic mt-0.5 opacity-80 group-hover:opacity-100 transition-opacity">
+            TAP • SCAN • REVIEW
+          </p>
+        </a>
+
+        <!-- ── Desktop Nav Pill (Hidden on Mobile) ───── -->
+        <nav id="desktop-nav" class="hidden lg:flex nav-pill rounded-full px-6 py-2.5 items-center gap-6">
+          <a href="#keunggulan" class="nav-link font-jakarta">Keunggulan</a>
+          <a href="#kategori" class="nav-link font-jakarta">Kategori Usaha</a>
+          <a href="#cara-kerja" class="nav-link font-jakarta">Cara Kerja</a>
+          <a href="#harga" class="nav-link font-jakarta">Harga & Reseller</a>
+        </nav>
+
+        <!-- ── Right Side: CTA + Hamburger ───────────── -->
+        <div class="flex items-center gap-3">
+          <a href="https://wa.me/6283169792969?text=Halo%20tap.in%20rev,%20saya%20ingin%20bertanya%20tentang%20produk%20Google%20Review%20Map"
+            target="_blank" rel="noopener noreferrer" id="cta-nav"
+            class="hidden sm:inline-flex items-center gap-1.5 px-5 py-2 rounded-full bg-gold text-dark font-semibold text-sm hover:shadow-[0_0_24px_rgba(250,204,21,0.4)] transition-all duration-300 hover:-translate-y-0.5">
+            Hubungi Kami
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="7" y1="17" x2="17" y2="7" />
+              <polyline points="7 7 17 7 17 17" />
+            </svg>
+          </a>
+
+          <!-- Hamburger (Mobile Only) -->
+          <button id="hamburger-btn"
+            class="hamburger lg:hidden flex flex-col items-center justify-center gap-[5px] w-10 h-10 rounded-lg border border-white/10 bg-white/5"
+            aria-label="Toggle Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── Mobile Menu Drawer ────────────────────────── -->
+      <div id="mobile-menu" class="mobile-menu lg:hidden mt-3 rounded-2xl nav-pill px-5 py-0">
+        <div class="py-5 flex flex-col gap-1">
+          <a href="#keunggulan"
+            class="block py-3 px-4 rounded-xl text-white/60 hover:text-gold hover:bg-white/5 transition-all font-medium text-sm">Keunggulan</a>
+          <a href="#kategori"
+            class="block py-3 px-4 rounded-xl text-white/60 hover:text-gold hover:bg-white/5 transition-all font-medium text-sm">Kategori
+            Usaha</a>
+          <a href="#cara-kerja"
+            class="block py-3 px-4 rounded-xl text-white/60 hover:text-gold hover:bg-white/5 transition-all font-medium text-sm">Cara
+            Kerja</a>
+          <a href="#harga"
+            class="block py-3 px-4 rounded-xl text-white/60 hover:text-gold hover:bg-white/5 transition-all font-medium text-sm">Harga
+            & Reseller</a>
+          <div class="mt-2 pt-3 border-t border-white/10">
+            <a href="https://wa.me/6283169792969?text=Halo%20tap.in%20rev,%20saya%20ingin%20bertanya%20tentang%20produk%20Google%20Review%20Map"
+              target="_blank" rel="noopener noreferrer"
+              class="flex items-center justify-center gap-1.5 w-full py-3 rounded-full bg-gold text-dark font-semibold text-sm hover:shadow-[0_0_24px_rgba(250,204,21,0.4)] transition-all">
+              Hubungi Kami
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7" />
+                <polyline points="7 7 17 7 17 17" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       HERO SECTION
+       ═══════════════════════════════════════════════════════ -->
+  <section id="hero" class="relative min-h-screen flex items-center justify-center pt-28 pb-16">
+
+    <!-- Ambient Radial Glow -->
+    <div class="ambient-glow"></div>
+
+    <!-- Decorative Dot Grid (right side) -->
+    <div class="absolute top-32 right-0 w-48 h-48 dot-grid opacity-40 rounded-full blur-sm pointer-events-none"></div>
+
+    <!-- Floating Decorative Elements -->
+    <div class="absolute top-40 left-[8%] w-3 h-3 rounded-full bg-gold/30 animate-float-slow pointer-events-none"></div>
+    <div class="absolute top-60 right-[12%] w-2 h-2 rounded-full bg-gold/20 animate-float-delay pointer-events-none">
+    </div>
+    <div class="absolute bottom-40 left-[15%] w-2.5 h-2.5 rounded-full bg-gold/25 animate-float pointer-events-none">
+    </div>
+    <div
+      class="absolute top-[35%] right-[6%] w-1.5 h-1.5 rounded-full bg-white/10 animate-float-slow pointer-events-none">
+    </div>
+
+    <!-- Decorative ring -->
+    <div
+      class="absolute top-[22%] left-[5%] w-16 h-16 rounded-full border border-gold/10 animate-float-slow pointer-events-none hidden md:block">
+    </div>
+    <div
+      class="absolute bottom-[28%] right-[8%] w-20 h-20 rounded-full border border-white/5 animate-float-delay pointer-events-none hidden md:block">
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center">
+
+      <!-- ── Floating Badge ────────────────────────────── -->
+      <div class="inline-flex items-center animate-float-slow mb-6">
+        <span
+          class="badge-glow rounded-full px-5 py-2 text-[11px] sm:text-xs font-semibold tracking-widest text-gold uppercase font-jakarta">
+          🚀 GOOGLE REVIEW MAP &nbsp;•&nbsp; SCAN &nbsp;•&nbsp; TAP &nbsp;•&nbsp; REVIEW &nbsp;•&nbsp; GROW
+        </span>
+      </div>
+
+      <!-- ── Headline ──────────────────────────────────── -->
+      <h1
+        class="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-extrabold tracking-normal leading-tight max-w-4xl mx-auto text-white">
+        Solusi Praktis Bantu Bisnis <span class="text-yellow-400">Berkembang</span><br class="hidden md:inline" /> —
+        Tingkatkan Rating <span class="relative inline-block pb-2">Bersama Kami
+          <!-- Hand-Drawn SVG Underline -->
+          <svg class="absolute -bottom-1 left-0 w-full h-3 pointer-events-none" viewBox="0 0 200 12" fill="none"
+            xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M2 8.5C30 3.5 70 2 100 4.5C130 7 170 5 198 2.5" stroke="#FACC15" stroke-width="2.5"
+              stroke-linecap="round" style="filter: drop-shadow(0 0 4px rgba(250, 204, 21, 0.4));" />
+            <path d="M5 10C40 5 80 4 105 6C135 8 165 6.5 195 4" stroke="#FACC15" stroke-width="1.5"
+              stroke-linecap="round" opacity="0.5" />
+          </svg>
+        </span>
+      </h1>
+
+      <!-- ── Sub-headline ──────────────────────────────── -->
+      <p
+        class="text-sm sm:text-base md:text-lg font-normal text-zinc-300 max-w-2xl mx-auto mt-5 mb-10 leading-relaxed font-jakarta">
+        Permudah pelanggan memberikan ulasan di Google Maps menggunakan teknologi
+        <span class="text-white font-medium">QR Code</span> dan
+        <span class="text-white font-medium">NFC</span>.
+        Cukup sekali tap atau scan, reputasi digital bisnis Anda langsung melesat.
+      </p>
+
+      <!-- ── Dual CTA Buttons ──────────────────────────── -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="https://wa.me/6283169792969?text=Halo%20tap.in%20rev,%20saya%20tertarik%20memesan%20alat%20Google%20Review%20Map"
+          target="_blank" rel="noopener noreferrer" class="btn-primary">
+          Pesan Sekarang
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="7" y1="17" x2="17" y2="7" />
+            <polyline points="7 7 17 7 17 17" />
+          </svg>
+        </a>
+        <a href="#harga" class="btn-secondary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <line x1="19" y1="8" x2="19" y2="14" />
+            <line x1="22" y1="11" x2="16" y2="11" />
+          </svg>
+          Paket Reseller
+        </a>
+      </div>
+
+      <!-- ── Trust Indicators ──────────────────────────── -->
+      <div class="mt-14 flex flex-wrap items-center justify-center gap-6 sm:gap-8 text-white/30 text-xs font-jakarta">
+        <div class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="#FACC15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-60">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+          <span>Aktif Selamanya</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="#FACC15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-60">
+            <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+          </svg>
+          <span>QR Code + NFC</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="#FACC15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-60">
+            <polygon
+              points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+          </svg>
+          <span>Tingkatkan Rating</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       SECTION 2 — KATEGORI USAHA
+       ═══════════════════════════════════════════════════════ -->
+  <section id="kategori" class="relative py-20 sm:py-28">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+
+      <!-- ── Section Label ─────────────────────────────── -->
+      <div class="text-center mb-12 sm:mb-16">
+        <span
+          class="inline-block badge-glow rounded-full px-5 py-2 text-[11px] sm:text-xs font-semibold tracking-widest text-gold uppercase font-jakarta mb-5 animate-float-slow">
+          🏪 COCOK UNTUK SEMUA JENIS USAHA &amp; UMKM
+        </span>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-normal leading-tight text-white">
+          Solusi untuk <span class="text-yellow-400">Berbagai</span> Kategori Bisnis
+        </h2>
+        <p class="text-zinc-300 text-sm sm:text-base font-normal mt-4 max-w-xl mx-auto font-jakarta leading-relaxed">
+          Dari kedai kopi hingga hotel — tap.in rev dirancang fleksibel untuk semua skala usaha yang ingin meningkatkan
+          reputasi digitalnya.
+        </p>
+      </div>
+
+      <!-- ── Category Grid (2-col mobile / 4-col desktop) ── -->
+      <div class="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5">
+
+        <!-- Card 1 — Coffee Shop -->
+        <div
+          class="group bg-[#0f0f0f] border border-white/10 hover:border-yellow-400/50 rounded-2xl p-5 text-center transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_0_24px_rgba(250,204,21,0.12)] cursor-default">
+          <div
+            class="w-11 h-11 mx-auto rounded-xl bg-yellow-400/10 border border-yellow-400/20 flex items-center justify-center text-yellow-400 mb-3 group-hover:bg-yellow-400/20 transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
+              <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
+              <line x1="6" y1="2" x2="6" y2="4" />
+              <line x1="10" y1="2" x2="10" y2="4" />
+              <line x1="14" y1="2" x2="14" y2="4" />
+            </svg>
+          </div>
+          <h3 class="text-base font-bold tracking-normal text-white">Coffee Shop</h3>
+          <p class="text-xs sm:text-sm text-zinc-300 mt-1">Kedai kopi & minuman</p>
+        </div>
+
+        <!-- Card 2 — Restoran & Cafe -->
+        <div
+          class="group bg-[#0f0f0f] border border-white/10 hover:border-yellow-400/50 rounded-2xl p-5 text-center transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_0_24px_rgba(250,204,21,0.12)] cursor-default">
+          <div
+            class="w-11 h-11 mx-auto rounded-xl bg-yellow-400/10 border border-yellow-400/20 flex items-center justify-center text-yellow-400 mb-3 group-hover:bg-yellow-400/20 transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
+              <path d="M7 2v20" />
+              <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" />
+            </svg>
+          </div>
+          <h3 class="text-base font-bold tracking-normal text-white">Restoran & Cafe</h3>
+          <p class="text-xs sm:text-sm text-zinc-300 mt-1">Rumah makan & kafe</p>
+        </div>
+
+        <!-- Card 3 — Toko & Ritel -->
+        <div
+          class="group bg-[#0f0f0f] border border-white/10 hover:border-yellow-400/50 rounded-2xl p-5 text-center transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_0_24px_rgba(250,204,21,0.12)] cursor-default">
+          <div
+            class="w-11 h-11 mx-auto rounded-xl bg-yellow-400/10 border border-yellow-400/20 flex items-center justify-center text-yellow-400 mb-3 group-hover:bg-yellow-400/20 transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7" />
+              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+              <path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4" />
+              <path d="M2 7h20" />
+              <path
+                d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7" />
+            </svg>
+          </div>
+          <h3 class="text-base font-bold tracking-normal text-white">Toko & Ritel</h3>
+          <p class="text-xs sm:text-sm text-zinc-300 mt-1">Toko fisik & retail</p>
+        </div>
+
+        <!-- Card 4 — Salon Kecantikan -->
+        <div
+          class="group bg-[#0f0f0f] border border-white/10 hover:border-yellow-400/50 rounded-2xl p-5 text-center transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_0_24px_rgba(250,204,21,0.12)] cursor-default">
+          <div
+            class="w-11 h-11 mx-auto rounded-xl bg-yellow-400/10 border border-yellow-400/20 flex items-center justify-center text-yellow-400 mb-3 group-hover:bg-yellow-400/20 transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 3v12" />
+              <path d="M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+              <path d="M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+              <path d="M15 6a9 9 0 0 0-9 9" />
+              <path d="M18 15v6" />
+            </svg>
+          </div>
+          <h3 class="text-base font-bold tracking-normal text-white">Salon Kecantikan</h3>
+          <p class="text-xs sm:text-sm text-zinc-300 mt-1">Beauty & spa</p>
+        </div>
+
+        <!-- Card 5 — Barbershop -->
+        <div
+          class="group bg-[#0f0f0f] border border-white/10 hover:border-yellow-400/50 rounded-2xl p-5 text-center transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_0_24px_rgba(250,204,21,0.12)] cursor-default">
+          <div
+            class="w-11 h-11 mx-auto rounded-xl bg-yellow-400/10 border border-yellow-400/20 flex items-center justify-center text-yellow-400 mb-3 group-hover:bg-yellow-400/20 transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="6" cy="6" r="3" />
+              <path d="M8.12 8.12 12 12" />
+              <path d="M20 4 8.12 15.88" />
+              <circle cx="6" cy="18" r="3" />
+              <path d="M14.8 14.8 20 20" />
+            </svg>
+          </div>
+          <h3 class="text-base font-bold tracking-normal text-white">Barbershop</h3>
+          <p class="text-xs sm:text-sm text-zinc-300 mt-1">Pangkas & grooming</p>
+        </div>
+
+        <!-- Card 6 — Bengkel -->
+        <div
+          class="group bg-[#0f0f0f] border border-white/10 hover:border-yellow-400/50 rounded-2xl p-5 text-center transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_0_24px_rgba(250,204,21,0.12)] cursor-default">
+          <div
+            class="w-11 h-11 mx-auto rounded-xl bg-yellow-400/10 border border-yellow-400/20 flex items-center justify-center text-yellow-400 mb-3 group-hover:bg-yellow-400/20 transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+            </svg>
+          </div>
+          <h3 class="text-base font-bold tracking-normal text-white">Bengkel</h3>
+          <p class="text-xs sm:text-sm text-zinc-300 mt-1">Otomotif & servis</p>
+        </div>
+
+        <!-- Card 7 — Hotel & Penginapan -->
+        <div
+          class="group bg-[#0f0f0f] border border-white/10 hover:border-yellow-400/50 rounded-2xl p-5 text-center transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_0_24px_rgba(250,204,21,0.12)] cursor-default">
+          <div
+            class="w-11 h-11 mx-auto rounded-xl bg-yellow-400/10 border border-yellow-400/20 flex items-center justify-center text-yellow-400 mb-3 group-hover:bg-yellow-400/20 transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z" />
+              <path d="m9 16 .348-.24c1.465-1.013 3.84-1.013 5.304 0L15 16" />
+              <path d="M8 7h.01" />
+              <path d="M16 7h.01" />
+              <path d="M12 7h.01" />
+              <path d="M12 11h.01" />
+              <path d="M16 11h.01" />
+              <path d="M8 11h.01" />
+            </svg>
+          </div>
+          <h3 class="text-base font-bold tracking-normal text-white">Hotel & Penginapan</h3>
+          <p class="text-xs sm:text-sm text-zinc-300 mt-1">Hospitality & travel</p>
+        </div>
+
+        <!-- Card 8 — UMKM & Bisnis Lainnya -->
+        <div
+          class="group bg-[#0f0f0f] border border-white/10 hover:border-yellow-400/50 rounded-2xl p-5 text-center transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_0_24px_rgba(250,204,21,0.12)] cursor-default">
+          <div
+            class="w-11 h-11 mx-auto rounded-xl bg-yellow-400/10 border border-yellow-400/20 flex items-center justify-center text-yellow-400 mb-3 group-hover:bg-yellow-400/20 transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+              <rect width="20" height="14" x="2" y="6" rx="2" />
+            </svg>
+          </div>
+          <h3 class="text-base font-bold tracking-normal text-white">UMKM & Lainnya</h3>
+          <p class="text-xs sm:text-sm text-zinc-300 mt-1">Semua jenis usaha</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       SECTION 3 — CARA KERJA & KEUNGGULAN
+       ═══════════════════════════════════════════════════════ -->
+  <section id="cara-kerja" class="relative py-20 sm:py-28">
+
+    <!-- Subtle ambient glow for section -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full pointer-events-none"
+      style="background: radial-gradient(circle, rgba(250,204,21,0.06) 0%, transparent 70%);"></div>
+
+    <div class="relative max-w-6xl mx-auto px-4 sm:px-6">
+
+      <!-- ── Section Heading ───────────────────────────── -->
+      <div class="text-center mb-12 sm:mb-16">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-normal leading-tight text-white mb-4">
+          Kenapa <span class="text-gold">tap.in rev</span> Pilihan Tepat untuk Bisnis Anda?
+        </h2>
+        <p class="text-zinc-300 text-sm sm:text-base font-normal leading-relaxed max-w-2xl mx-auto font-jakarta">
+          Kami membantu bisnis lebih mudah mengajak pelanggan berbagi pengalaman dan membangun kepercayaan secara
+          digital.
+        </p>
+      </div>
+
+      <!-- ── 4-Step Tab Bar ────────────────────────────── -->
+      <div id="tab-bar" class="grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3 mb-10 max-w-3xl mx-auto">
+        <button class="tab-btn active" data-tab="1">
+          <span class="tab-number">01.</span> Scan QR / Tap NFC
+        </button>
+        <button class="tab-btn" data-tab="2">
+          <span class="tab-number">02.</span> Buka Google Maps
+        </button>
+        <button class="tab-btn" data-tab="3">
+          <span class="tab-number">03.</span> Ulasan Sukarela
+        </button>
+        <button class="tab-btn" data-tab="4">
+          <span class="tab-number">04.</span> Bisnis Berkembang
+        </button>
+      </div>
+
+      <!-- ── Tab Content Panels ────────────────────────── -->
+      <div id="tab-panels" class="mb-12 text-center">
+        <div class="tab-panel active" data-panel="1">
+          <p class="text-zinc-300 text-sm sm:text-base font-normal font-jakarta max-w-xl mx-auto">
+            Pelanggan cukup <span class="text-white font-semibold">mengarahkan kamera HP ke QR Code</span> atau <span
+              class="text-white font-semibold">menempelkan HP ke tag NFC</span> — proses instan tanpa perlu install
+            aplikasi apapun.
+          </p>
+        </div>
+        <div class="tab-panel" data-panel="2">
+          <p class="text-zinc-300 text-sm sm:text-base font-normal font-jakarta max-w-xl mx-auto">
+            Setelah scan atau tap, pelanggan langsung <span class="text-white font-semibold">diarahkan
+              otomatis</span> ke halaman ulasan Google Maps bisnis Anda — tanpa perlu mencari nama usaha secara manual.
+          </p>
+        </div>
+        <div class="tab-panel" data-panel="3">
+          <p class="text-zinc-300 text-sm sm:text-base font-normal font-jakarta max-w-xl mx-auto">
+            Pelanggan memberikan <span class="text-white font-semibold">ulasan secara sukarela dan praktis</span> —
+            cukup dalam hitungan detik. Tidak ada paksaan, hanya kemudahan akses yang mendorong mereka berbagi.
+          </p>
+        </div>
+        <div class="tab-panel" data-panel="4">
+          <p class="text-zinc-300 text-sm sm:text-base font-normal font-jakarta max-w-xl mx-auto">
+            Semakin banyak ulasan positif, <span class="text-white font-semibold">rating bisnis meningkat</span>,
+            muncul lebih sering di pencarian Google Maps, dan lebih mudah <span
+              class="text-white font-semibold">membangun kepercayaan pelanggan baru</span>.
+          </p>
+        </div>
+      </div>
+
+      <!-- ── Dual Bento Cards ──────────────────────────── -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+
+        <!-- BENTO LEFT — Praktis dengan QR Code & NFC -->
+        <div class="bento-card group relative h-full flex flex-col justify-between p-7 sm:p-8 rounded-3xl">
+          <div class="flex-1 flex flex-col">
+            <!-- Header with Title & Arrow -->
+            <div class="flex items-start justify-between gap-4 mb-3">
+              <div>
+                <h3 class="text-xl sm:text-2xl font-bold tracking-normal text-white">Praktis dengan QR Code & NFC</h3>
+              </div>
+              <!-- Arrow button -->
+              <a href="https://wa.me/6283169792969" target="_blank" rel="noopener noreferrer"
+                class="flex-shrink-0 w-10 h-10 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center text-zinc-300 hover:text-gold hover:border-gold/40 transition-all duration-300 group-hover:border-gold/30"
+                title="Hubungi Kami via WhatsApp">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7" />
+                  <polyline points="7 7 17 7 17 17" />
+                </svg>
+              </a>
+            </div>
+
+            <!-- Sub-judul / Deskripsi -->
+            <p class="text-sm sm:text-base font-normal leading-relaxed text-zinc-300 mb-6 font-jakarta">
+              Permudah pelanggan memberikan ulasan di Google Maps menggunakan teknologi QR Code dan NFC tanpa harus
+              mengetik atau mencari nama bisnis secara manual.
+            </p>
+
+            <!-- 3 Poin Penjelasan Detail Produk -->
+            <div class="space-y-3 mt-auto">
+              <!-- Point 1 -->
+              <div
+                class="bg-white/[0.03] border border-white/10 rounded-2xl p-4 transition-all duration-300 hover:border-white/20">
+                <div class="text-sm sm:text-base font-bold tracking-normal text-white mb-1.5 flex items-center gap-2">
+                  <span>📲</span> Dual Teknologi Instan (NFC & QR Code)
+                </div>
+                <p class="text-xs sm:text-sm font-normal leading-relaxed text-zinc-300 font-jakarta">
+                  Pelanggan cukup menempelkan smartphone (Tap NFC) atau memindai kamera (Scan QR Code) dalam hitungan
+                  detik.
+                </p>
+              </div>
+
+              <!-- Point 2 -->
+              <div
+                class="bg-white/[0.03] border border-white/10 rounded-2xl p-4 transition-all duration-300 hover:border-white/20">
+                <div class="text-sm sm:text-base font-bold tracking-normal text-white mb-1.5 flex items-center gap-2">
+                  <span>⚡</span> Tanpa Aplikasi Tambahan
+                </div>
+                <p class="text-xs sm:text-sm font-normal leading-relaxed text-zinc-300 font-jakarta">
+                  Langsung membuka halaman ulasan Google Maps bisnis Anda secara otomatis di HP Android maupun iPhone.
+                </p>
+              </div>
+
+              <!-- Point 3 -->
+              <div
+                class="bg-white/[0.03] border border-white/10 rounded-2xl p-4 transition-all duration-300 hover:border-white/20">
+                <div class="text-sm sm:text-base font-bold tracking-normal text-white mb-1.5 flex items-center gap-2">
+                  <span>♾️</span> Aktivasi Sekali untuk Selamanya
+                </div>
+                <p class="text-xs sm:text-sm font-normal leading-relaxed text-zinc-300 font-jakarta">
+                  Cukup satu kali pengaturan link Google Maps, alat siap digunakan seterusnya tanpa biaya langganan
+                  bulanan.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BENTO RIGHT — Bangun Kepercayaan Digital -->
+        <div class="bento-card group relative h-full flex flex-col justify-between p-7 sm:p-8 rounded-3xl">
+          <div class="flex-1 flex flex-col">
+            <!-- Header with Title & Arrow -->
+            <div class="flex items-start justify-between gap-4 mb-3">
+              <div>
+                <h3 class="text-xl sm:text-2xl font-bold tracking-normal text-white">Bangun Kepercayaan Digital</h3>
+              </div>
+              <!-- Arrow button -->
+              <a href="https://wa.me/6283169792969" target="_blank" rel="noopener noreferrer"
+                class="flex-shrink-0 w-10 h-10 rounded-xl bg-gold text-dark flex items-center justify-center hover:shadow-[0_0_20px_rgba(250,204,21,0.4)] transition-all duration-300"
+                title="Hubungi Kami via WhatsApp">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7" />
+                  <polyline points="7 7 17 7 17 17" />
+                </svg>
+              </a>
+            </div>
+
+            <!-- Sub-judul / Deskripsi -->
+            <p class="text-sm sm:text-base font-normal leading-relaxed text-zinc-300 mb-6 font-jakarta">
+              Bantu bisnis lebih mudah mendapatkan ulasan pelanggan secara sukarela dan meningkatkan peringkat bisnis di
+              pencarian lokal Google.
+            </p>
+
+            <!-- 3 Poin Penjelasan Detail Produk -->
+            <div class="space-y-3 mt-auto">
+              <!-- Point 1 -->
+              <div
+                class="bg-yellow-400/[0.04] border border-yellow-400/20 rounded-2xl p-4 transition-all duration-300 hover:border-yellow-400/40">
+                <div class="text-sm sm:text-base font-bold tracking-normal text-white mb-1.5 flex items-center gap-2">
+                  <span>⭐</span> Tingkatkan Rating & Ulasan Asli
+                </div>
+                <p class="text-xs sm:text-sm font-normal leading-relaxed text-zinc-300 font-jakarta">
+                  Mendorong pelanggan yang puas untuk langsung berbagi pengalaman positif saat masih berada di lokasi
+                  usaha.
+                </p>
+              </div>
+
+              <!-- Point 2 -->
+              <div
+                class="bg-yellow-400/[0.04] border border-yellow-400/20 rounded-2xl p-4 transition-all duration-300 hover:border-yellow-400/40">
+                <div class="text-sm sm:text-base font-bold tracking-normal text-white mb-1.5 flex items-center gap-2">
+                  <span>📈</span> Naikkan Peringkat SEO Google Maps
+                </div>
+                <p class="text-xs sm:text-sm font-normal leading-relaxed text-zinc-300 font-jakarta">
+                  Semakin banyak ulasan bintang 5 yang konsisten, bisnis Anda semakin mudah muncul di urutan teratas
+                  pencarian Google.
+                </p>
+              </div>
+
+              <!-- Point 3 -->
+              <div
+                class="bg-yellow-400/[0.04] border border-yellow-400/20 rounded-2xl p-4 transition-all duration-300 hover:border-yellow-400/40">
+                <div class="text-sm sm:text-base font-bold tracking-normal text-white mb-1.5 flex items-center gap-2">
+                  <span>🏪</span> Cocok untuk Semua Skala Bisnis
+                </div>
+                <p class="text-xs sm:text-sm font-normal leading-relaxed text-zinc-300 font-jakarta">
+                  Solusi praktis untuk Coffee Shop, Restoran, Barbershop, Salon, Bengkel, Hotel, hingga berbagai UMKM.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       SECTION 4 — HARGA & PAKET RESELLER
+       ═══════════════════════════════════════════════════════ -->
+  <section id="harga" class="relative py-20 sm:py-28">
+
+    <!-- Ambient glow behind pricing -->
+    <div
+      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full pointer-events-none"
+      style="background: radial-gradient(circle, rgba(250,204,21,0.05) 0%, transparent 65%);"></div>
+
+    <div class="relative max-w-5xl mx-auto px-4 sm:px-6">
+
+      <!-- ── Section Heading ───────────────────────────── -->
+      <div class="text-center mb-12 sm:mb-16">
+        <span
+          class="inline-block badge-glow rounded-full px-5 py-2 text-[11px] sm:text-xs font-semibold tracking-widest text-gold uppercase font-jakarta mb-5 animate-float-slow">
+          💎 PILIH PAKET YANG SESUAI
+        </span>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-normal leading-tight text-white mb-4">
+          Harga <span class="text-gold">Terjangkau</span>, Hasil Maksimal
+        </h2>
+        <p class="text-zinc-300 text-sm sm:text-base font-normal leading-relaxed max-w-xl mx-auto font-jakarta">
+          Pilih paket aktivasi satuan untuk bisnis Anda, atau mulai peluang usaha sebagai reseller dengan modal ringan.
+        </p>
+      </div>
+
+      <!-- ── Pricing Grid ──────────────────────────────── -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-stretch max-w-5xl mx-auto">
+
+        <!-- ╔══════════════════════════════════════════════╗
+             ║  KARTU 1 — HARGA AKTIVASI REGULER           ║
+             ╚══════════════════════════════════════════════╝ -->
+        <div
+          class="relative bg-[#0a0a0a] border border-white/[0.07] rounded-3xl p-7 sm:p-8 h-full flex flex-col justify-between transition-all duration-400 hover:border-white/15 hover:shadow-[0_0_30px_rgba(255,255,255,0.03)] group">
+
+          <div class="flex-1 flex flex-col">
+            <!-- Badge -->
+            <div>
+              <span
+                class="inline-block rounded-full px-4 py-1.5 text-[11px] font-semibold tracking-wider text-white/50 bg-white/[0.04] border border-white/[0.08] uppercase mb-6">
+                💰 SATUAN / REGULER
+              </span>
+            </div>
+
+            <!-- Subtitle -->
+            <p class="text-white/40 text-xs font-jakarta font-medium uppercase tracking-wider mb-3">Untuk Pemilik Bisnis
+            </p>
+
+            <!-- Price -->
+            <div class="flex items-baseline gap-1.5 mb-2">
+              <span class="text-4xl sm:text-5xl font-extrabold text-white tracking-normal font-jakarta">Rp50.000</span>
+              <span class="text-white/30 text-sm font-jakarta">/ unit</span>
+            </div>
+
+            <!-- Highlight Box (Seimbang dengan kartu kanan) -->
+            <div class="rounded-xl px-4 py-3 mb-6 mt-4 bg-white/[0.03] border border-white/10">
+              <p class="text-zinc-300 text-xs sm:text-sm font-medium font-jakarta flex items-center gap-2">
+                <span class="text-yellow-400">⚡</span> Sekali Bayar • Tanpa Biaya Bulanan / Tahunan
+              </p>
+            </div>
+
+            <!-- Divider -->
+            <div class="w-full h-px bg-white/[0.06] mb-6"></div>
+
+            <!-- Feature List -->
+            <ul class="space-y-4 mb-8 flex-1">
+              <li class="flex items-start gap-3">
+                <span class="flex-shrink-0 w-5 h-5 rounded-full bg-gold/10 flex items-center justify-center mt-0.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    stroke="#FACC15" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </span>
+                <span class="text-zinc-300 text-sm font-jakarta leading-relaxed">Aktivasi <span
+                    class="text-white font-medium">satu kali</span></span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="flex-shrink-0 w-5 h-5 rounded-full bg-gold/10 flex items-center justify-center mt-0.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    stroke="#FACC15" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </span>
+                <span class="text-zinc-300 text-sm font-jakarta leading-relaxed">Aktif <span
+                    class="text-white font-medium">selamanya</span> sesuai ketentuan produk</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="flex-shrink-0 w-5 h-5 rounded-full bg-gold/10 flex items-center justify-center mt-0.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    stroke="#FACC15" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </span>
+                <span class="text-zinc-300 text-sm font-jakarta leading-relaxed">Praktis menggunakan <span
+                    class="text-white font-medium">QR Code</span> dan <span
+                    class="text-white font-medium">NFC</span></span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="flex-shrink-0 w-5 h-5 rounded-full bg-gold/10 flex items-center justify-center mt-0.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    stroke="#FACC15" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </span>
+                <span class="text-zinc-300 text-sm font-jakarta leading-relaxed">Langsung terhubung ke <span
+                    class="text-white font-medium">Google Maps</span> bisnis Anda</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- CTA Button (Aligned to bottom) -->
+          <a href="https://wa.me/6283169792969?text=Halo%20tap.in%20rev,%20saya%20ingin%20pesan%20Paket%20Reguler%20(Rp50.000/unit)"
+            target="_blank" rel="noopener noreferrer" class="btn-primary w-full justify-center text-sm py-3.5 mt-auto">
+            Pesan Satuan Sekarang
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="7" y1="17" x2="17" y2="7" />
+              <polyline points="7 7 17 7 17 17" />
+            </svg>
+          </a>
+        </div>
+
+
+        <!-- ╔══════════════════════════════════════════════╗
+             ║  KARTU 2 — PAKET RESELLER (HIGHLIGHT)       ║
+             ╚══════════════════════════════════════════════╝ -->
+        <div
+          class="relative bg-[#0a0a0a] rounded-3xl p-7 sm:p-8 h-full flex flex-col justify-between transition-all duration-400 group overflow-hidden"
+          style="border: 1.5px solid rgba(250, 204, 21, 0.35); box-shadow: 0 0 50px rgba(250, 204, 21, 0.07), inset 0 1px 0 rgba(250,204,21,0.1);">
+
+          <!-- Ambient glow inside card -->
+          <div class="absolute -top-20 -right-20 w-56 h-56 rounded-full pointer-events-none"
+            style="background: radial-gradient(circle, rgba(250,204,21,0.1) 0%, transparent 70%);"></div>
+          <div class="absolute -bottom-16 -left-16 w-40 h-40 rounded-full pointer-events-none"
+            style="background: radial-gradient(circle, rgba(250,204,21,0.06) 0%, transparent 70%);"></div>
+
+          <!-- "PELUANG BISNIS" Badge (top right) -->
+          <div class="absolute top-4 right-4 sm:top-6 sm:right-6">
+            <span
+              class="inline-flex items-center gap-1 rounded-full px-3 py-1 text-[10px] font-bold tracking-wider text-dark bg-gold uppercase shadow-[0_0_16px_rgba(250,204,21,0.3)]">
+              🔥 PELUANG BISNIS
+            </span>
+          </div>
+
+          <div class="flex-1 flex flex-col relative z-10">
+            <!-- Category Badge -->
+            <div>
+              <span
+                class="relative inline-block rounded-full px-4 py-1.5 text-[11px] font-semibold tracking-wider text-gold bg-gold/[0.08] border border-gold/20 uppercase mb-6">
+                📦 PAKET RESELLER
+              </span>
+            </div>
+
+            <!-- Subtitle -->
+            <p class="text-gold/60 text-xs font-jakarta font-medium uppercase tracking-wider mb-3">Peluang Usaha
+              Reseller
+            </p>
+
+            <!-- Price -->
+            <div class="relative flex items-baseline gap-1.5 mb-2">
+              <span class="text-4xl sm:text-5xl font-extrabold text-white tracking-normal font-jakarta">Rp150.000</span>
+              <span class="text-white/30 text-sm font-jakarta">/ 5 PCS</span>
+            </div>
+
+            <!-- Profit Highlight Box -->
+            <div class="relative rounded-xl px-4 py-3 mb-6 mt-4"
+              style="background: rgba(250,204,21,0.08); border: 1px solid rgba(250,204,21,0.2);">
+              <p class="text-gold text-xs sm:text-sm font-semibold font-jakarta flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="#FACC15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                </svg>
+                Potensi Keuntungan Kotor <span class="text-white font-bold">Rp100.000</span> / paket!
+              </p>
+            </div>
+
+            <!-- Divider -->
+            <div class="relative w-full h-px bg-gold/10 mb-6"></div>
+
+            <!-- Feature List -->
+            <ul class="relative space-y-3.5 mb-8 flex-1">
+              <li class="flex items-start gap-3">
+                <span class="flex-shrink-0 w-5 h-5 rounded-full bg-gold/15 flex items-center justify-center mt-0.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="#FACC15"
+                    stroke="none">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                </span>
+                <span class="text-zinc-300 text-sm font-jakarta leading-relaxed">Harga modal hanya <span
+                    class="text-gold font-semibold">Rp30.000</span> per unit</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="flex-shrink-0 w-5 h-5 rounded-full bg-gold/15 flex items-center justify-center mt-0.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="#FACC15"
+                    stroke="none">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                </span>
+                <span class="text-zinc-300 text-sm font-jakarta leading-relaxed">Harga jual rekomendasi <span
+                    class="text-gold font-semibold">Rp50.000</span> per unit</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="flex-shrink-0 w-5 h-5 rounded-full bg-gold/15 flex items-center justify-center mt-0.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="#FACC15"
+                    stroke="none">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                </span>
+                <span class="text-zinc-300 text-sm font-jakarta leading-relaxed">Potensi keuntungan kotor <span
+                    class="text-gold font-semibold">Rp100.000</span> jika 5 unit terjual</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="flex-shrink-0 w-5 h-5 rounded-full bg-gold/15 flex items-center justify-center mt-0.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="#FACC15"
+                    stroke="none">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                </span>
+                <span class="text-zinc-300 text-sm font-jakarta leading-relaxed">Mendapatkan <span
+                    class="text-white font-medium">panduan penjualan</span> dan cara aktivasi</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="flex-shrink-0 w-5 h-5 rounded-full bg-gold/15 flex items-center justify-center mt-0.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="#FACC15"
+                    stroke="none">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                </span>
+                <span class="text-zinc-300 text-sm font-jakarta leading-relaxed">Bisa dipasarkan ke <span
+                    class="text-white font-medium">berbagai jenis usaha</span></span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="flex-shrink-0 w-5 h-5 rounded-full bg-gold/15 flex items-center justify-center mt-0.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="#FACC15"
+                    stroke="none">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                </span>
+                <span class="text-zinc-300 text-sm font-jakarta leading-relaxed">Cocok untuk <span
+                    class="text-white font-medium">mahasiswa, freelancer</span>, dan pemula yang ingin memulai
+                  bisnis</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- CTA (Solid Gold, Aligned to bottom) -->
+          <a href="https://wa.me/6283169792969?text=Halo%20tap.in%20rev,%20saya%20tertarik%20ambil%20Paket%20Reseller%20(Rp150.000/5%20PCS)"
+            target="_blank" rel="noopener noreferrer"
+            class="relative flex items-center justify-center gap-2 w-full py-3.5 rounded-full bg-gold text-dark font-bold text-sm font-jakarta hover:shadow-[0_0_30px_rgba(250,204,21,0.4)] transition-all duration-300 hover:-translate-y-0.5 mt-auto">
+            Gabung Reseller Sekarang
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="7" y1="17" x2="17" y2="7" />
+              <polyline points="7 7 17 7 17 17" />
+            </svg>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       SECTION 5 — BANNER CTA PENUTUP
+       ═══════════════════════════════════════════════════════ -->
+  <section id="kontak" class="relative py-20 sm:py-28">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+
+      <!-- CTA Card -->
+      <div class="relative rounded-3xl overflow-hidden px-6 py-14 sm:px-12 sm:py-20 text-center"
+        style="background: linear-gradient(180deg, #0c0c0c 0%, #080808 100%); border: 1px solid rgba(255,255,255,0.06);">
+
+        <!-- Inner ambient glow -->
+        <div
+          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[300px] rounded-full pointer-events-none"
+          style="background: radial-gradient(circle, rgba(250,204,21,0.12) 0%, transparent 65%);"></div>
+        <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[600px] h-[200px] rounded-full pointer-events-none"
+          style="background: radial-gradient(ellipse, rgba(250,204,21,0.06) 0%, transparent 70%);"></div>
+
+        <!-- Dot grid subtle -->
+        <div class="absolute inset-0 dot-grid opacity-10 pointer-events-none"></div>
+
+        <!-- Floating decorative -->
+        <div class="absolute top-8 left-8 w-2 h-2 rounded-full bg-gold/25 animate-float-slow pointer-events-none"></div>
+        <div
+          class="absolute bottom-12 right-10 w-2.5 h-2.5 rounded-full bg-gold/20 animate-float-delay pointer-events-none">
+        </div>
+        <div
+          class="absolute top-12 right-[15%] w-12 h-12 rounded-full border border-gold/10 animate-float pointer-events-none hidden sm:block">
+        </div>
+
+        <!-- Content -->
+        <div class="relative z-10">
+          <!-- Tagline -->
+          <p class="text-gold text-[11px] sm:text-xs font-semibold tracking-[0.3em] uppercase mb-6 font-jakarta">
+            SCAN • TAP • REVIEW • GROW
+          </p>
+
+          <!-- Heading -->
+          <h2
+            class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-normal text-white mb-5 max-w-2xl mx-auto leading-tight">
+            Tertarik Membeli atau Menjadi <span class="text-gold">Reseller</span>?
+          </h2>
+
+          <!-- Sub-text -->
+          <p class="text-zinc-300 text-sm sm:text-base font-normal leading-relaxed max-w-xl mx-auto mb-10 font-jakarta">
+            Bantu bisnis lebih mudah mendapatkan ulasan pelanggan dan membangun kepercayaan secara digital. Hubungi kami
+            untuk informasi lebih lanjut.
+          </p>
+
+          <!-- WhatsApp CTA -->
+          <a href="https://wa.me/6283169792969?text=Halo%20tap.in%20rev,%20mohon%20info%20lebih%20lanjut"
+            target="_blank" rel="noopener noreferrer"
+            class="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-gold text-dark font-bold text-sm sm:text-base font-jakarta hover:shadow-[0_0_40px_rgba(250,204,21,0.35)] transition-all duration-300 hover:-translate-y-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg>
+            Hubungi Kami via WhatsApp
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="7" y1="17" x2="17" y2="7" />
+              <polyline points="7 7 17 7 17 17" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════ -->
+  <footer class="relative border-t border-white/[0.05] pt-12 pb-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+
+      <!-- Top row -->
+      <div class="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-8 mb-10">
+
+        <!-- Brand -->
+        <div class="text-center sm:text-left">
+          <a href="#" class="inline-block group">
+            <div class="flex items-baseline leading-none justify-center sm:justify-start">
+              <span class="text-xl font-extrabold text-gold tracking-normal font-jakarta">tap.</span>
+              <span class="text-xl font-extrabold text-white tracking-normal font-jakarta">in rev</span>
+            </div>
+            <p
+              class="text-[9px] tracking-[0.25em] text-gold italic mt-1 opacity-70 group-hover:opacity-100 transition-opacity">
+              TAP • SCAN • REVIEW
+            </p>
+          </a>
+          <p class="text-white/25 text-xs mt-3 max-w-xs font-jakarta leading-relaxed">
+            Solusi praktis Google Review Map berbasis QR Code & NFC untuk semua jenis usaha.
+          </p>
+        </div>
+
+        <!-- Quick Nav -->
+        <div class="flex flex-wrap justify-center sm:justify-end gap-x-6 gap-y-2">
+          <a href="#hero" class="footer-link font-jakarta">Beranda</a>
+          <a href="#keunggulan" class="footer-link font-jakarta">Keunggulan</a>
+          <a href="#kategori" class="footer-link font-jakarta">Kategori</a>
+          <a href="#cara-kerja" class="footer-link font-jakarta">Cara Kerja</a>
+          <a href="#harga" class="footer-link font-jakarta">Harga</a>
+          <a href="#kontak" class="footer-link font-jakarta">Kontak</a>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="w-full h-px bg-white/[0.05] mb-6"></div>
+
+      <!-- Bottom row -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+        <p class="text-white/20 text-xs font-jakarta">
+          &copy; 2026 tap.in rev — Semua hak dilindungi.
+        </p>
+        <p class="text-white/15 text-[11px] font-jakarta">
+          Dibuat dengan ❤️ untuk UMKM Indonesia
+        </p>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       SCRIPTS
+       ═══════════════════════════════════════════════════════ -->
+  <script>
+    // ── Hamburger Toggle ──────────────────────────────────
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    hamburgerBtn.addEventListener('click', () => {
+      hamburgerBtn.classList.toggle('active');
+      mobileMenu.classList.toggle('open');
+    });
+
+    // Close mobile menu when a link is clicked
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburgerBtn.classList.remove('active');
+        mobileMenu.classList.remove('open');
+      });
+    });
+
+    // ── Navbar Background on Scroll ───────────────────────
+    const navbar = document.getElementById('navbar');
+    let lastScroll = 0;
+
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.scrollY;
+
+      if (currentScroll > 60) {
+        navbar.style.background = 'rgba(5, 5, 5, 0.85)';
+        navbar.style.backdropFilter = 'blur(16px)';
+        navbar.style.webkitBackdropFilter = 'blur(16px)';
+        navbar.style.borderBottom = '1px solid rgba(255,255,255,0.06)';
+      } else {
+        navbar.style.background = 'transparent';
+        navbar.style.backdropFilter = 'none';
+        navbar.style.webkitBackdropFilter = 'none';
+        navbar.style.borderBottom = 'none';
+      }
+
+      lastScroll = currentScroll;
+    });
+
+    // ── Cara Kerja Tab System ─────────────────────────────
+    const tabBar = document.getElementById('tab-bar');
+    const tabBtns = tabBar ? tabBar.querySelectorAll('.tab-btn') : [];
+    const tabPanels = document.querySelectorAll('.tab-panel');
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.tab;
+
+        // Update buttons
+        tabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // Update panels with fade
+        tabPanels.forEach(p => {
+          if (p.dataset.panel === target) {
+            p.classList.add('active');
+          } else {
+            p.classList.remove('active');
+          }
+        });
+      });
+    });
+
+    // ── Initialize Lucide Icons ───────────────────────────
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+  </script>
+
+</body>
+
+</html>
